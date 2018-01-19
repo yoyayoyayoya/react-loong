@@ -1,5 +1,6 @@
 {
   "presets": [
+    "react",
     [
       "env",
       {
@@ -14,6 +15,9 @@
   ],
   "plugins": ["transform-decorators-legacy", "transform-object-rest-spread"],
   "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    },
     "commonjs": {
       "presets": [
         [
