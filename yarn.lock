@@ -3040,9 +3040,9 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loong@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/loong/-/loong-0.14.0.tgz#bb744733801d686bfa0e22d68d214ccd8fbfe5b6"
+loong@^0.14.3:
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/loong/-/loong-0.14.3.tgz#0b4a38ef8784041481fa3c0eadbf21ffcf1aedde"
   dependencies:
     is-promise "^2.1.0"
     loose-envify "^1.3.1"
@@ -3590,6 +3590,14 @@ react-dom@^16.2.0:
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
+react-test-renderer@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.2.0.tgz#bddf259a6b8fcd8555f012afc8eacc238872a211"
+  dependencies:
+    fbjs "^0.8.16"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 

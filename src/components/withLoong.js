@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import hoistStatics from 'hoist-non-react-statics'
+import { storeShape } from '../utils/propTypes'
 
 const dummyState = {}
 let hotLoadingVersion = 0
@@ -13,11 +15,6 @@ export default function withLoong(events = [], propsTransformer = d => d) {
         this.version = hotLoadingVersion
         this.store = context.store
         this.state = {}
-        this.props = Object.assign(
-          props,
-          { publish: this.store.publish },
-          this.store.getState()
-        )
         this.onStateChange = this.onStateChange.bind(this)
         this.events = events
         this.subscribers = []
@@ -40,10 +37,13 @@ export default function withLoong(events = [], propsTransformer = d => d) {
         this.subscribers = []
       }
       render() {
-        return React.createElement(
-          wrappedComponent,
-          propsTransformer(this.props)
+        const props = Object.assign(
+          {},
+          this.props,
+          { publish: this.store.publish },
+          this.store.getState()
         )
+        return React.createElement(wrappedComponent, propsTransformer(props))
       }
     }
 
@@ -58,6 +58,9 @@ export default function withLoong(events = [], propsTransformer = d => d) {
       }
     }
 
+    Subscribe.contextTypes = {
+      store: storeShape.isRequired
+    }
     return hoistStatics(Subscribe, wrappedComponent)
   }
 }
