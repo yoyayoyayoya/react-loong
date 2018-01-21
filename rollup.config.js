@@ -8,14 +8,16 @@ import uglify from 'rollup-plugin-uglify'
 const env = process.env.NODE_ENV
 
 const config = {
-  entry: 'src/index.js',
+  input: 'src/index.js',
   external: ['react', 'loong'],
-  globals: {
-    react: 'React',
-    loong: 'Loong'
+  output: {
+    globals: {
+      react: 'React',
+      loong: 'Loong'
+    },
+    format: 'umd',
+    name: 'ReactLoong'
   },
-  format: 'umd',
-  moduleName: 'ReactLoong',
   plugins: [
     nodeResolve(),
     babel({
