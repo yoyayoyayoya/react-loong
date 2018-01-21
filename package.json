@@ -1,8 +1,10 @@
 {
   "name": "react-loong",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "The react component for loong",
   "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
   "author": "Yoya <yoya_yoya_yoya@icloud.com>(https://github.com/yoyayoyayoya)",
   "license": "MIT",
   "files": ["dist", "lib", "es"],

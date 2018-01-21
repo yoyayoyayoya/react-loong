@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
 const dummyState = {}
+let hotLoadingVersion = 0
 
-export default function withLoong(events = [], dataTransformer = d => d) {
+export default function withLoong(events = [], propsTransformer = d => d) {
   return function wrapWithSubscribe(wrappedComponent) {
+    hotLoadingVersion++
     class Subscribe extends Component {
       constructor(props, context) {
         super(props, context)
+        this.version = hotLoadingVersion
         this.store = context.store
         this.state = {}
         this.props = Object.assign(
@@ -15,6 +18,7 @@ export default function withLoong(events = [], dataTransformer = d => d) {
           { publish: this.store.publish },
           this.store.getState()
         )
+        this.onStateChange = this.onStateChange.bind(this)
         this.events = events
         this.subscribers = []
         this.initSubscription()
@@ -25,29 +29,32 @@ export default function withLoong(events = [], dataTransformer = d => d) {
       }
       initSubscription() {
         const store = this.store
-        const onStateChange = this.onStateChange.bind(this)
         for (let event of this.events) {
-          store.subscribe(event, onStateChange)
+          this.subscribers.push(store.subscribe(event, this.onStateChange))
         }
       }
       componentWillUnmount() {
         for (let s of this.subscribers) {
-          s.unsubscribe()
+          s.unsubscribe(this.onStateChange)
         }
+        this.subscribers = []
       }
       render() {
         return React.createElement(
           wrappedComponent,
-          dataTransformer(this.props)
+          propsTransformer(this.props)
         )
       }
     }
 
     if (process.env.NODE_ENV !== 'production') {
       Subscribe.prototype.componentWillUpdate = function componentWillUpdate() {
-        // We are hot reloading!
-        // if (this.version !== version) {
-        // }
+        //for hot loading
+        if (this.version !== hotLoadingVersion) {
+          this.version = hotLoadingVersion
+          this.subscribers = []
+          this.initSubscription()
+        }
       }
     }
 
