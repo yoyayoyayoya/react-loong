@@ -1,17 +1,13 @@
 {
   "name": "react-loong",
-  "version": "0.5.2",
+  "version": "0.5.7",
   "description": "The react component for loong",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
+  "main": "lib/react-loong.js",
+  "module": "es/react-loong.js",
+  "jsnext:main": "es/react-loong.js",
   "author": "Yoya <yoya_yoya_yoya@icloud.com>(https://github.com/yoyayoyayoya)",
   "license": "MIT",
-  "files": [
-    "dist",
-    "lib",
-    "es"
-  ],
+  "files": ["dist", "lib", "es"],
   "keywords": [
     "react",
     "state management",
@@ -31,44 +27,39 @@
   },
   "scripts": {
     "build:commonjs": "cross-env NODE_ENV=cjs rollup -c -o lib/react-loong.js",
-    "build:es": "cross-env BABEL_ENV=es NODE_ENV=es rollup -c -o es/react-loong.js",
-    "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -o dist/react-loong.js",
-    "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -o dist/react-loong.min.js",
-    "build": "npm run clean && npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "build:es":
+      "cross-env BABEL_ENV=es NODE_ENV=es rollup -c -o es/react-loong.js",
+    "build:umd":
+      "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -o dist/react-loong.js",
+    "build:umd:min":
+      "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -o dist/react-loong.min.js",
+    "build":
+      "npm run clean && npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "clean": "rimraf lib dist es coverage",
     "lint": "eslint src test",
     "test": "cross-env BABEL_ENV=commonjs jest",
     "test:cov": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
     "coverage": "npm test -- --coverage > coverage.lcov && codecov",
-    "precommit": "npm test && lint-staged"
+    "precommit": "npm test && lint-staged",
+    "prepare": "npm run clean && npm run lint && npm test && npm run build"
   },
   "npmName": "react-loong",
   "npmFileMap": [
     {
       "basePath": "/dist/",
-      "files": [
-        "*.js"
-      ]
+      "files": ["*.js"]
     }
   ],
   "browserify": {
-    "transform": [
-      "loose-envify"
-    ]
+    "transform": ["loose-envify"]
   },
   "jest": {
     "testRegex": "(/test/.*\\.spec.js)$",
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/test/**/*.{js,jsx}"
-    ]
+    "collectCoverageFrom": ["src/**/*.{js,jsx}", "!src/test/**/*.{js,jsx}"]
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.{js,jsx}": ["eslint --fix", "git add"]
   },
   "dependencies": {
     "hoist-non-react-statics": "^2.3.1",

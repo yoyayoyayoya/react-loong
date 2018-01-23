@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import hoistStatics from 'hoist-non-react-statics'
 import { storeShape } from '../utils/propTypes'
+import shallowEqual from '../utils/shallowEqual'
 
 const dummyState = {}
 let hotLoadingVersion = 0
@@ -14,15 +15,23 @@ export default function withLoong(events = [], propsTransformer = d => d) {
         super(props, context)
         this.version = hotLoadingVersion
         this.store = context.store
+        this.publish = this.store.publish.bind(this.store)
         this.state = {}
         this.onStateChange = this.onStateChange.bind(this)
         this.events = events
         this.subscribers = []
+        this.isShouldUpdate = false
         this.initSubscription()
       }
       onStateChange(newState) {
-        this.props = Object.assign(this.props, newState)
-        this.setState(dummyState)
+        let preProps = this.props
+        let nextProps = Object.assign({}, this.props, newState)
+        if (!shallowEqual(preProps, nextProps)) {
+          this.isShouldUpdate = true
+          this.setState(dummyState)
+        } else {
+          this.isShouldUpdate = false
+        }
       }
       initSubscription() {
         const store = this.store
@@ -36,11 +45,14 @@ export default function withLoong(events = [], propsTransformer = d => d) {
         }
         this.subscribers = []
       }
+      shouldComponentUpdate() {
+        return this.isShouldUpdate
+      }
       render() {
         const props = Object.assign(
           {},
           this.props,
-          { publish: this.store.publish },
+          { publish: this.publish },
           this.store.getState()
         )
         return React.createElement(wrappedComponent, propsTransformer(props))
